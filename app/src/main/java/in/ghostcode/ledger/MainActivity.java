@@ -8,12 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -21,8 +19,6 @@ import android.widget.Spinner;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
-    private String eType = "";
     ArrayList<Expense> expenses = new ArrayList<>();
     RecyclerViewExpenseAdapter adapter;
     private Spinner expenseType;
@@ -66,25 +62,14 @@ public class MainActivity extends AppCompatActivity {
                         String date = datePicker.getDayOfMonth() + "/" +
                                 datePicker.getMonth() + "/" +
                                 datePicker.getYear();
-                        Log.d("test", expenseType.getSelectedItem().toString());
-                        expenseType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                if (position != 0) {
-                                    eType = expenseType.getSelectedItem().toString();
-                                    Log.d("test", expenseType.getSelectedItem().toString());
-                                }
-                            }
+                        String eType= expenseType.getSelectedItem().toString();
 
-                            @Override
-                            public void onNothingSelected(AdapterView<?> parent) {
-
-                            }
-                        });
-
-                        Expense expense = new Expense(title, eType, date, amount);
-                        expenses.add(expense);
-                        adapter.notifyDataSetChanged();
+                        String[] expenseTypes= getResources().getStringArray(R.array.expense_types);
+                        if (!eType.equals(expenseTypes[0]) && !title.equals("") && !amount.equals("")) {
+                            Expense expense = new Expense(title, eType, date, amount);
+                            expenses.add(expense);
+                            adapter.notifyDataSetChanged();
+                        }
 
 
                     }
